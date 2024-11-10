@@ -14,6 +14,6 @@ Proyek ini dikerjakan oleh kelompok 1 yang terdiri dari empat orang:
 
 
 ## Screenshots
-Berikut hasul dari aplikasi yang kami buat:
+Berikut hasul dari aplikasi yang kami buat: <br>
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
