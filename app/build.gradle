@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -12,7 +13,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -20,6 +21,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
         }
     }
     compileOptions {
@@ -35,6 +41,8 @@ dependencies {
     implementation libs.constraintlayout
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-auth")
+    implementation 'com.google.firebase:firebase-firestore:24.1.1'
+    implementation "androidx.multidex:multidex:2.0.1"
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
