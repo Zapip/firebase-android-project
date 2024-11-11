@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView textViewUserEmail;
     private Button buttonLogout;
+    private Button buttonAdd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        buttonLogout = findViewById(R.id.buttonLogout);  // Pastikan baris ini ada
+        buttonLogout = findViewById(R.id.buttonLogout);
+        buttonAdd = findViewById(R.id.buttonAdd);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -35,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             String userEmail = currentUser.getEmail();
-            textViewUserEmail.setText("Logged in as: " + userEmail);
+            textViewUserEmail.setText("Hi, " + userEmail);
         }
+        buttonAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AddDataActivity.class);
+            startActivity(intent);
+        });
+
 
         buttonLogout.setOnClickListener(v -> {
             mAuth.signOut();

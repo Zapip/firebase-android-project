@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/cafeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Cafe"
+        android:layout_gravity="center_horizontal"
+        android:textSize="16dp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/cafeImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/cafeDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi Cafe"
+        android:paddingTop="8dp"/>
+
+    <TextView
+        android:id="@+id/cafeLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lokasi Cafe"
+        android:paddingTop="4dp"/>
+
+    <TextView
+        android:id="@+id/cafeRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        android:paddingTop="4dp"/>
+
+    <TextView
+        android:id="@+id/cafePricelist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lihat Pricelist"
+        android:textColor="@android:color/holo_blue_light"
+        android:paddingTop="4dp"/>
+</LinearLayout>
