@@ -1,63 +1,73 @@
 package com.example.firebaseandroidproject;
 
 public class Cafe {
-    String id, name, desc, pic, price, location, rating;
+    // Sesuaikan nama variabel dengan data Firestore
+    private String id;
+    private String nameET;
+    private String descET;
+    private String picET;
+    private String priceET;
+    private String locationET;
+    private String ratingET;
 
-    public Cafe(){}
+    public Cafe() {
+        // Constructor kosong diperlukan oleh Firestore
+    }
 
+    // Getter dan Setter untuk field sesuai dengan data Firestore
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getRating() {
-        return rating;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getNameET() {
+        return nameET;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setNameET(String nameET) {
+        this.nameET = nameET;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public String getDescET() {
+        return descET;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setDescET(String descET) {
+        this.descET = descET;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public String getPicET() {
+        return picET;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setPicET(String picET) {
+        this.picET = picET;
+    }
+
+    public String getPriceET() {
+        return priceET;
+    }
+
+    public void setPriceET(String priceET) {
+        this.priceET = priceET;
+    }
+
+    public String getLocationET() {
+        return locationET;
+    }
+
+    public void setLocationET(String locationET) {
+        this.locationET = locationET;
+    }
+
+    public String getRatingET() {
+        return ratingET;
+    }
+
+    public void setRatingET(String ratingET) {
+        this.ratingET = ratingET;
     }
 }
