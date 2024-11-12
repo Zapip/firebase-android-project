@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,100 +29,74 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private CafeAdapter adapter;
+    private ArrayList<Cafe> arrayList = new ArrayList<>(); // ArrayList untuk adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         TextView textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        Button buttonLogout = findViewById(R.id.buttonLogout);
-
-        FirebaseApp.initializeApp(MainActivity.this);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        Button buttonAdd = findViewById(R.id.buttonAdd);
-        buttonAdd.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AddCafeActivity.class)));
-        db.collection("cafes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    ArrayList<Cafe> arrayList = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Cafe cafe = document.toObject(Cafe.class);
-                        cafe.setId(document.getId());
-                        arrayList.add(cafe);
-                    }
-                    CafeAdapter adapter = new CafeAdapter(MainActivity.this, arrayList);
-                    recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this)); // Set layout manager
+        adapter = new CafeAdapter(MainActivity.this, arrayList); // Inisialisasi adapter
+        recyclerView.setAdapter(adapter);
 
-                    adapter.setOnItemClickListener(new CafeAdapter.OnItemClickListener() {
-                        @Override
-                        public void onClick(Cafe cafe) {
-                            App.cafe = cafe;
-                            startActivity(new Intent(MainActivity.this, EditCafeActivity.class));
-                        }
-                    });
-                } else {
-                    Toast.makeText(MainActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
+        Button buttonLogout = findViewById(R.id.buttonLogout);
+        Button buttonAdd = findViewById(R.id.buttonAdd);
+        Button buttonRefresh = findViewById(R.id.buttonRefresh);
+
+        // Listener untuk item klik
+        adapter.setOnItemClickListener(cafe -> {
+            App.cafe = cafe;
+            startActivity(new Intent(MainActivity.this, EditCafeActivity.class));
         });
 
-//        FloatingActionButton refresh = findViewById(R.id.);
-//        refresh.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                db.collection("cafes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            ArrayList<Cafe> arrayList = new ArrayList<>();
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Cafe cafe = document.toObject(Cafe.class);
-//                                cafe.setId(document.getId());
-//                                arrayList.add(cafe);
-//                            }
-//                            CafeAdapter adapter = new CafeAdapter(MainActivity.this, arrayList);
-//                            recyclerView.setAdapter(adapter);
-//
-//                            adapter.setOnItemClickListener(new CafeAdapter.OnItemClickListener() {
-//                                @Override
-//                                public void onClick(Cafe cafe) {
-//                                    App.cafe = cafe;
-//                                    startActivity(new Intent(MainActivity.this, EditCafeActivity.class));
-//                                }
-//                            });
-//                        } else {
-//                            Toast.makeText(MainActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//            }
-//        });
-
+        // Set email user jika login berhasil
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         if (currentUser == null) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         } else {
             String userEmail = currentUser.getEmail();
             textViewUserEmail.setText("Hi, " + userEmail);
         }
-        buttonAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AddCafeActivity.class);
-            startActivity(intent);
-        });
 
-
+        // Fungsi Logout
         buttonLogout.setOnClickListener(v -> {
             mAuth.signOut();
             Toast.makeText(MainActivity.this, "Anda berhasil logout", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+        });
+
+        // Fungsi untuk refresh data cafe dari Firestore
+        buttonRefresh.setOnClickListener(view -> refreshData());
+
+        // Menambahkan data cafe baru
+        buttonAdd.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AddCafeActivity.class)));
+
+        // Muat data awal
+        refreshData();
+    }
+
+    private void refreshData() {
+        db.collection("cafes").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                arrayList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Cafe cafe = document.toObject(Cafe.class);
+                    cafe.setId(document.getId());
+                    arrayList.add(cafe);
+                }
+                adapter.notifyDataSetChanged(); // Hanya update data tanpa membuat instance baru
+            } else {
+                Toast.makeText(MainActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

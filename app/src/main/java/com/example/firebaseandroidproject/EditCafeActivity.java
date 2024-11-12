@@ -32,12 +32,12 @@ public class EditCafeActivity extends AppCompatActivity {
         EditText ratingET = findViewById(R.id.editTextRating);
         Button save_btn = findViewById(R.id.buttonSave);
 
-        nameET.setText(App.cafe.getName());
-        descET.setText(App.cafe.getDesc());
-        picET.setText(App.cafe.getPic());
-        priceET.setText(App.cafe.getPrice());
-        locationET.setText(App.cafe.getLocation());
-        ratingET.setText(App.cafe.getRating());
+        nameET.setText(App.cafe.getNameET());
+        descET.setText(App.cafe.getDescET());
+        picET.setText(App.cafe.getPicET());
+        priceET.setText(App.cafe.getPriceET());
+        locationET.setText(App.cafe.getLocationET());
+        ratingET.setText(App.cafe.getRatingET());
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override

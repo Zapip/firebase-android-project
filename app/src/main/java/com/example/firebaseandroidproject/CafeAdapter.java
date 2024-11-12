@@ -31,12 +31,12 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name.setText(MessageFormat.format("{0} {1}", arrayList.get(position).getName()));
-        holder.desc.setText(arrayList.get(position).getDesc());
-        holder.pic.setText(arrayList.get(position).getPic());
-        holder.price.setText(arrayList.get(position).getPrice());
-        holder.location.setText(arrayList.get(position).getLocation());
-        holder.rating.setText(arrayList.get(position).getRating());
+        holder.name.setText(MessageFormat.format("{0} {1}", arrayList.get(position).getNameET()));
+        holder.desc.setText(arrayList.get(position).getDescET());
+        holder.pic.setText(arrayList.get(position).getPicET());
+        holder.price.setText(arrayList.get(position).getPriceET());
+        holder.location.setText(arrayList.get(position).getLocationET());
+        holder.rating.setText(arrayList.get(position).getRatingET());
         holder.itemView.setOnClickListener(view -> onItemClickListener.onClick(arrayList.get(position)));
     }
 
@@ -52,7 +52,6 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
             name = itemView.findViewById(R.id.cafeName);
             pic = itemView.findViewById(R.id.cafeImage);
             desc = itemView.findViewById(R.id.cafeDescription);
-            pic = itemView.findViewById(R.id.cafeImage);
             price = itemView.findViewById(R.id.cafePricelist);
             location = itemView.findViewById(R.id.cafeLocation);
             rating = itemView.findViewById(R.id.cafeRating);
