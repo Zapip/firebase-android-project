@@ -4,15 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.MessageFormat;
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
-public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
+public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder> {
     Context context;
     ArrayList<Cafe> arrayList;
     OnItemClickListener onItemClickListener;
@@ -31,13 +33,24 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name.setText(MessageFormat.format("{0} {1}", arrayList.get(position).getNameET()));
-        holder.desc.setText(arrayList.get(position).getDescET());
-        holder.pic.setText(arrayList.get(position).getPicET());
-        holder.price.setText(arrayList.get(position).getPriceET());
-        holder.location.setText(arrayList.get(position).getLocationET());
-        holder.rating.setText(arrayList.get(position).getRatingET());
-        holder.itemView.setOnClickListener(view -> onItemClickListener.onClick(arrayList.get(position)));
+        Cafe cafe = arrayList.get(position);
+
+        // Set text properties
+        holder.name.setText(cafe.getNameET());
+        holder.desc.setText(cafe.getDescET());
+        holder.price.setText(cafe.getPriceET());
+        holder.location.setText(cafe.getLocationET());
+        holder.rating.setText(cafe.getRatingET());
+
+        // Load image using Glide
+        Glide.with(context)
+                .load(cafe.getPicET())
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
+                .into(holder.pic);
+
+        // Handle item click
+        holder.itemView.setOnClickListener(view -> onItemClickListener.onClick(cafe));
     }
 
     @Override
@@ -46,7 +59,9 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, desc, pic, price, location, rating;
+        TextView name, desc, price, location, rating;
+        ImageView pic;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.cafeName);
@@ -63,8 +78,6 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder>{
     }
 
     public interface OnItemClickListener {
-        void onClick(Cafe user);
+        void onClick(Cafe cafe);
     }
-
-
 }
